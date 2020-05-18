@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from load_pronote import Pronote
 import os
 
@@ -9,13 +11,11 @@ def get_id():
     id = []
     complete = True
 
-    with open("infos/connection_data.txt", 'r') as file:
+    with open("infos/connection_data.txt", 'r', encoding='utf-8') as file:
 
         for line in file:
             line = line.replace(' ', '').replace('\n', '')
-            if line.startswith('#'):
-                pass
-            else:
+            if not line.startswith('#'):
                 data = line.split('=')
                 if data[1] == '':
                     if complete:
@@ -42,17 +42,21 @@ def connection():
 
         except KeyError:
             print("Erreur lors de la connection à pronote : {}".format(pronote.result['error']))
-            os.system('break')
-            exit()
+            os.system('pause')
 
-    except Exception:
+    except:
 
         print("Erreur lors de la connection à l'API de pronote. Veuillez la lancer.")
-        os.system("break")
-        exit()
+        os.system("pause")
 
 
 def main():
+
+    try:
+        os.mkdir('output')
+
+    except FileExistsError:
+        pass
 
     pronote = connection()
 
@@ -60,14 +64,15 @@ def main():
 
     finale_grade = pronote.est_bac()
 
-    mention = pronote.est_mention()
+    mention, felicitation = pronote.est_mention()
 
     print('Votre note est estimée à {:.2f}'.format(finale_grade))
 
     print(mention)
 
-    os.system("break")
-    exit()
+    print(felicitation)
+
+    os.system("pause")
 
 
 if __name__ == '__main__':

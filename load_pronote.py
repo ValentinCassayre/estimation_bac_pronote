@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from urllib import request
 import json
 import pandas as pd
@@ -26,7 +28,7 @@ class Pronote:
 
         self.result = json.loads(page)
 
-        with open('output/pronote.txt', 'w') as txt:
+        with open('output/pronote.txt', 'w', encoding='utf-8') as txt:
             txt.write(str(self.result))
 
     def reports(self):
@@ -50,7 +52,7 @@ class Pronote:
         load the additional notes from the première (Français/TPE/Sciences...)
         """
 
-        with open('infos/marks_data.txt', 'r') as txt:
+        with open('infos/marks_data.txt', 'r', encoding='utf-8') as txt:
             for line in txt:
                 line = line.replace('\n', '')
                 if line.startswith('#'):
@@ -105,11 +107,13 @@ class Pronote:
 
     def est_mention(self):
 
+        felicitations = ''
         mentions = ['assez bien', 'bien', 'très bien']
 
         if self.finale_grade >= 10:
 
             result = 'Vous avez votre bac.'
+            felicitations = 'Félicitations !'
 
             for n, grade in enumerate([12, 14, 16]):
                 diff = self.finale_grade - grade
@@ -122,7 +126,7 @@ class Pronote:
                         result = 'Il est probable que vous ayez votre bac avec mention {}.'.format(mentions[n])
                     elif n >= 1:
                         result = 'Il est possible que vous ayez votre bac avec mention {} (à {:.2f} points près) ' \
-                                 'sinon vous aurez mention {}.'.format(mentions[n], diff, mentions[n-1])
+                                 'sinon vous aurez mention {}.'.format(mentions[n], -1*diff, mentions[n-1])
                     else:
                         result = 'Il est possible que vous ayez votre bac avec mention {}.'.format(mentions[n])
 
@@ -138,4 +142,4 @@ class Pronote:
             else:
                 result = 'Vous avez une note insuffisante pour avoir votre bac.'
 
-        return result
+        return result, felicitations
