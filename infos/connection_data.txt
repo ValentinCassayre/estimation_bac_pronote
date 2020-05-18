@@ -1,0 +1,9 @@
+# CONNECTION DATA
+# LIEN PRONOTE EN ENLEVANT LE ELEVE/ DE LA FIN
+# ACADEMIE SOUS LA FORME ac-ville
+# UTILISATEUR DE VOTRE ENT
+# MOT DE PASSE DE VOTRE ENT
+Lien_pronote =
+Académie =
+Utilisateur =
+Mot_de_passe =
