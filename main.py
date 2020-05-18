@@ -66,6 +66,9 @@ def main():
 
     print(mention)
 
+    os.system("break")
+    exit()
+
 
 if __name__ == '__main__':
     main()
