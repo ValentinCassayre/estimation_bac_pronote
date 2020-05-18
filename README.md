@@ -73,12 +73,11 @@ L'api est lancée et la console devrait afficher :\
 
 ### Lancer le script
 
-Il y a deux possibilités pour lancer le script, la première méthode est plus simple et ne nécessite plus rien, mais 
-n'est peut être pas mis à jour.
+Il y a deux possibilités pour lancer le script, la première méthode est plus simple et ne nécessite pas grand chose, mais demande de télécharger un autre fichier qui est beaucoup plus volumineux.
 
 #### Par l'executable
 
-Retourner dans le dossier *estimation_bac_pronote-master* et lancer l'executable
+[Télécharger l'executable](https://drive.google.com/open?id=1YbPT4s2b0sbn75BnJY4db--5RvEmA0qB), puis le déplacer dans le dossier *estimation_bac_pronote-master*. Une fois dedans il peut être lancé.
 
 #### En utilisant python
 
