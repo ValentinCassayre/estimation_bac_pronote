@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from load_pronote import Pronote
+from note_mention import Estimateur
+from graphs import Graph
+
 import os
 
 
@@ -50,27 +53,32 @@ def connection():
         os.system("pause")
 
 
+def make_dir():
+
+    for dir in ['output', 'output/graphs', 'output/graphs/pdf']:
+
+        try:
+            os.mkdir(dir)
+
+        except FileExistsError:
+            pass
+
+
 def main():
 
-    try:
-        os.mkdir('output')
-
-    except FileExistsError:
-        pass
+    make_dir()
 
     pronote = connection()
 
-    pronote.reports()
+    bulletins = pronote.reports()
 
-    finale_grade = pronote.est_bac()
+    pronote.load_notes_bac()
 
-    mention, felicitation = pronote.est_mention()
+    df = Estimateur().print_all(pronote.reports_list, pronote.df_other_marks)
 
-    print('Votre note est estimée à {:.2f}'.format(finale_grade))
+    Graph(df, bulletins)
 
-    print(mention)
-
-    print(felicitation)
+    print('Les graphiques ont été téléchargé dans output/graphs ou dans le fichier output/bilan')
 
     os.system("pause")
 
