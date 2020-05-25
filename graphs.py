@@ -4,13 +4,16 @@ from PyPDF2 import PdfFileReader, PdfFileMerger
 
 
 class Graph:
+    """
+    draw graphs
+    """
 
     def __init__(self, df, trim_rep):
 
         self.df = df
         self.dft1, self.dft2 = trim_rep
 
-        self.n = 0
+        self.n = 1
 
         for name in ('Nuage de points 1', 'Nuage de points 2', 'Histogramme 1', 'Box 1', 'Radar 1'):
 
@@ -144,16 +147,24 @@ class Graph:
                 ax.set_title("Graphique des notes de l'année en fonction de la moyenne de classe", y=1.2)
                 plt.subplots_adjust(left=0.3, right=0.7)
 
-        plt.savefig('output/graphs/pdf/Graph {}.pdf'.format(self.n))
-        plt.savefig('output/graphs/{}.png'.format(name))
+        for file in ('output/graphs/pdf/Graph {}.pdf'.format(self.n), 'output/graphs/{}.png'.format(name)):
+            try:
+                plt.savefig(file)
+            except PermissionError:
+                print("Erreur dans l'enregistrement de {}. Veuillez fermer l'ancien document ({})."
+                      .format(name.lower(), file))
 
     def create_report(self):
+        """
+        merge all graphs into one file
+        """
 
         merged = PdfFileMerger()
-
-        merged.append(PdfFileReader('output\Estimation.pdf'))
 
         for fileNumber in range(self.n):
             merged.append(PdfFileReader('output\graphs\pdf\Graph {}.pdf'.format(fileNumber), 'rb'))
 
-        merged.write("output/Bilan.pdf")
+        try:
+            merged.write("output/Bilan.pdf")
+        except PermissionError:
+            print("Erreur dans l'enregistrement du bilan. Veuillez fermer l'ancien pdf (output/Bilan.pdf).")

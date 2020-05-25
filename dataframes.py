@@ -7,15 +7,15 @@ class Dataframes:
     """
     class related to the analysis of the grades in dataframes
     """
+
     @staticmethod
     def create_full_table(df):
         """
-        create other columns in the table
+        create and manage a dataframes with all the grades and points
         """
         # arrondi au superieur
         df.loc[:, 'roundedAverage'] = df.loc[:, 'average'].apply(np.ceil)
 
-        # option
         df.loc[:, 'obligatoire'] = df.loc[:, 'coefficient'] >= 2
 
         # calc points

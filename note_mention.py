@@ -5,48 +5,37 @@ import requests
 
 
 class Estimateur:
+    """
+    dont read this
+    """
 
     @staticmethod
-    def print_all(reports_list, df_other_marks):
+    def print_all(name, reports_list, df_other_marks):
 
-        df, note, points, total_points = Estimateur().calc_note(reports_list, df_other_marks)
+        df = Estimateur().create_table(reports_list, df_other_marks)
 
-        text_note = Estimateur().print_note(note, points, total_points)
+        note_arr, points_arr, total = Estimateur.calc_note(df, arr=True, opt=True, tot=True)
+        note, points = Estimateur.calc_note(df, arr=False, opt=True, tot=False)
+        note_opt_arr, points_opt_arr = Estimateur.calc_note(df, arr=True, opt=False, tot=False)
+        note_opt, points_opt = Estimateur.calc_note(df, arr=False, opt=False, tot=False)
 
-        text_mention, text_felicitation = Estimateur().print_mention(note)
+        text_mention, text_felicitation = Estimateur.calc_mention(note_arr)
 
-        text = '{}\n{}\n{}'.format(text_note, text_mention, text_felicitation)
+        text = '{}, votre note est estimée à {:.2f} par arrondissement des moyennes au point supérieur ' \
+               '({:.0f}/{:.0f}).\n{} {}\nVotre note serait de {:.2f} sans arrondissements ({:.0f}/{:.0f}).\n' \
+               'Et elle serait de {:.2f} avec arrondissements mais sans options ({:.0f}/{:.0f}).\nOu de {:.2f}' \
+               ' sans les deux ({:.0f}/{:.0f}).'\
+            .format(name, note_arr, points_arr, total, text_mention, text_felicitation, note, points,
+                    total, note_opt_arr, points_opt_arr, total, note_opt, points_opt, total)
+
+        print(text)
 
         Estimateur.gen_pdf(text)
 
         return df
 
     @staticmethod
-    def print_note(note, points, total_points):
-
-        text = 'Votre note est estimée à {:.2f}, soit {:.2f}/{:.2f}'.format(note, points, total_points)
-        print(text)
-
-        return text
-
-    @staticmethod
-    def print_special_note(text, note, points, total_points):
-
-        text = '{} Votre note serait de {:.2f}, soit {:.2f}/{:.2f}'.format(text, note, points, total_points)
-        print(text)
-
-        return text
-
-    @staticmethod
-    def print_mention(note):
-
-        result, felicitations = Estimateur().calc_mention(note)
-        print(result)
-        print(felicitations)
-        return result, felicitations
-
-    @staticmethod
-    def calc_note(reports_list, df_other_marks):
+    def create_table(reports_list, df_other_marks):
         """
         convert all the reports into one
         """
@@ -65,14 +54,32 @@ class Estimateur:
         # create the full dataframe
         df = Dataframes().create_full_table(df)
 
-        # calc
-        last_row = df.iloc[-1, :]
-        points = last_row['roundedPoints']
-        total_points =last_row['realCoefficient']*20
+        return df
 
+    @staticmethod
+    def calc_note(df, arr=True, opt=True, tot=True):
+
+        rows = df.iloc[:-1, :]
+        last_row = df.iloc[-1, :]
+
+        if arr:
+            grade = 'roundedAverage', 'roundedPoints'
+        else:
+            grade = 'average', 'points'
+
+        if opt:
+            points = last_row[grade[1]].sum()
+        else:
+            points = (rows[grade[0]]*rows['realCoefficient']).sum()
+
+        total_points = last_row['realCoefficient'] * 20
         note = 20 * points / total_points
 
-        return df, note, points, total_points
+        if tot:
+            return note, points, total_points
+
+        else:
+            return note, points
 
     @staticmethod
     def calc_mention(note):
@@ -88,10 +95,10 @@ class Estimateur:
 
             for n, grade in enumerate(notes):
                 diff = note - grade
-                if diff >= -0.3:
+                if diff >= -0.8:
                     if diff >= 0.8:
                         result = 'Il est presque certain que vous ayez votre bac avec mention {}.'.format(mentions[n])
-                    elif diff >= 0.3:
+                    elif diff >= 0.5:
                         result = 'Il est très probable que vous ayez votre bac avec mention {}.'.format(mentions[n])
                     elif note - grade >= 0:
                         result = 'Il est probable que vous ayez votre bac avec mention {}.'.format(mentions[n])
@@ -124,5 +131,10 @@ class Estimateur:
 
         response = requests.get(url.format(invoice_id))
         response = requests.get(response.content)
-        with open('output\Estimation.pdf', "wb") as file:
-            file.write(response.content)
+
+        try:
+            with open('output/graphs/pdf/Graph 0.pdf', "wb") as file:
+                file.write(response.content)
+        except PermissionError:
+            print("Erreur dans l'enregistrement de la première page du bilan. Veuillez fermer l'ancien pdf "
+                  "(output/graphs/pdf/0.pdf).")

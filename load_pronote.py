@@ -10,31 +10,49 @@ class Pronote:
     class that load the data from Pronote
     """
 
-    def __init__(self, username, password, url, ac):
+    def __init__(self, user_id, offline=False):
+        """
+        connect to pronote or rescue the grades from last connection
+        """
 
         self.reports_list = []
         self.df_other_marks = None
 
-        self.body = {"type": "fetch", "username": username, "password": password, "url": url, "cas": ac}
+        if offline:
+            print('Mode hors ligne sur la sauvegarde de la dernière connection.')
+            with open('output/pronote.json', 'r', encoding='utf-8') as pronote:
+                self.result = json.load(pronote)
 
-        self.jsondata = json.dumps(self.body).encode("utf8")
+        else:
 
-        req = request.Request("http://127.0.0.1:21727/")
+            username, password, url, ac = user_id
 
-        req.add_header('Content-Type', 'application/json; charset=utf-8')
+            self.body = {"type": "fetch", "username": username, "password": password, "url": url, "cas": ac}
 
-        res = request.urlopen(req, self.jsondata).read()
+            del password
 
-        page = res.decode("utf8")
+            self.jsondata = json.dumps(self.body).encode("utf8")
 
-        self.result = json.loads(page)
+            req = request.Request("http://127.0.0.1:21727/")
 
-        with open('output/pronote.txt', 'w', encoding='utf-8') as txt:
-            txt.write(str(self.result))
+            req.add_header('Content-Type', 'application/json; charset=utf-8')
+
+            res = request.urlopen(req, self.jsondata).read()
+
+            page = res.decode("utf8")
+
+            self.result = json.loads(page)
+
+            try:
+                self.result['error']
+
+            except KeyError:
+                with open('output/pronote.json', 'w', encoding='utf-8') as save:
+                    save.write(page)
 
     def reports(self):
         """
-        return the reports
+        return the reports (bulletins des 3 premiers trimestres) into a list of dataframes
         """
 
         for trimester in range(3):
@@ -51,7 +69,7 @@ class Pronote:
 
     def load_notes_bac(self):
         """
-        load the additional notes from the première (Français/TPE/Sciences...)
+        load the additional notes from the file (Français/TPE/Sciences...)
         """
 
         with open('infos/marks_data.txt', 'r', encoding='utf-8') as txt:

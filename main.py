@@ -3,6 +3,7 @@
 from load_pronote import Pronote
 from note_mention import Estimateur
 from graphs import Graph
+import urllib
 
 import os
 
@@ -37,28 +38,44 @@ def connection():
 
     try:
 
-        pronote = Pronote(username=username, password=password, url=link, ac=ac)
+        pronote = Pronote(user_id=(username, password, link, ac), offline=True)
 
         try:
             print("Connection réussie à Pronote {}".format(pronote.result['name']))
             return pronote
 
         except KeyError:
-            print("Erreur lors de la connection à pronote : {}".format(pronote.result['error']))
-            os.system('pause')
 
-    except:
+            print("Erreur lors de la connection à pronote : {}".format(pronote.result['error']))
+
+            try:
+                return offline_connection()
+            except:
+                os.system('pause')
+
+    except urllib.error.URLError:
 
         print("Erreur lors de la connection à l'API de pronote. Veuillez la lancer.")
-        os.system("pause")
+
+        try:
+            return offline_connection()
+        except FileNotFoundError:
+            print('Pas de sauvegarde de connection trouvé.')
+            os.system('pause')
+
+
+def offline_connection():
+
+    pronote = Pronote(None, offline=True)
+    return pronote
 
 
 def make_dir():
 
-    for dir in ['output', 'output/graphs', 'output/graphs/pdf']:
+    for path in ['output', 'output/graphs', 'output/graphs/pdf']:
 
         try:
-            os.mkdir(dir)
+            os.mkdir(path=path)
 
         except FileExistsError:
             pass
@@ -74,7 +91,7 @@ def main():
 
     pronote.load_notes_bac()
 
-    df = Estimateur().print_all(pronote.reports_list, pronote.df_other_marks)
+    df = Estimateur().print_all(pronote.result['name'], pronote.reports_list, pronote.df_other_marks)
 
     Graph(df, bulletins)
 

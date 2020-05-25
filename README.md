@@ -1,7 +1,8 @@
 # Estimateur de note de bac 2020
 
 Ce script python permet d'évaluer et d'estimer une note ainsi qu'une mention pour le bac de 2020 qui sera en contrôle continue. 
-Pour ça j'utilise la superbe api pronote de Litarvan (https://github.com/Litarvan/pronote-api).
+Pour ça il la superbe api pronote de Litarvan (https://github.com/Litarvan/pronote-api). En prime le scipt offre un 
+compte rendu pdf avec différents scénarios et des graphiques sur les notes de l'année.
 
 ## Méthode de calcul
 
@@ -9,7 +10,8 @@ La note est estimé d'après les notes des bulletins des deux premiers trimestre
 (voir la rubrique *utilisation*) ainsi que leurs coefficients. Les deux bulletins sont d'abord fusionnées en gardant la moyenne
 et les coefficients de chaque matière. Chacune de ces moyennes, arrondies au supérieur (d'après le décret le plus récent) 
 correspondent à la note de l'épreuve. Le total de points de l'élève est calculé en multipliant
-chacune de ces notes par le coefficient de la matière. Le total des points est donc 20*le total des coefficients. \
+chacune de ces notes par le coefficient de la matière.\
+
 Maintenant vient également les notes des options qui comptent comme bonus. Chaque point au dessus de la moyenne est multiplié
 par son coefficient (d'après les coefficients officiels du bac) ou par le double de son coefficient 
 (en prennant le coeff. pronote qui est la moitié du coeff officiel). Ces points bonus une fois additionnées sont ajoutés
@@ -19,11 +21,12 @@ Si vous avez des remarques à faire n'hésitez pas à [m'en faire part](http://v
 ## Avantage du script
 
 * Automatisé au maximum
-* Base du script utilisable pour créer d'autres scripts Pythons, par exemple pour récupérer des devoirs ou faire des
-moyennes de notes
-* Sors une base de bulletin en format de tableur (*output/Trimestre n.csv*)
-* Sors un détail de toutes les notes (*output/Relevé notes.csv*)
+* Base du réutilisable pour créer d'autres projets utilisant l'api de pronote en Python, par exemple pour récupérer 
+des devoirs, faire des moyennes de notes ou alors récupérer l'emplois du temps
+* Les données sont classés et tous les bulletins de la terminale sont utilisable dans un tableur (*output/Trimestre n.csv*)
+* Sors le détail de toutes les notes utilisé pour calculer la note et les graphs (*output/Relevé notes.csv*)
 * Plus classe que de calculer à la main
+* Donne un compte rendu en pdf complet avec les notes et les graphiques
 
 ## Limites du script
 
@@ -34,7 +37,8 @@ moyennes de notes
 saturation du serveur de pronote (voir message d'erreur de l'api)
 * Il faut avoir pronote pour utiliser le script
 * Ce n'est qu'une estimation, la note finale sera surement un peu différente, la méthode de calcul est loin d'être parfaite
-et n'est qu'une supposition. D'autres facteurs comme les appréciations et le livret scolaire vont également compter pour ce bac assez spécial.
+et n'est qu'une supposition d'après le premier décret sorti. D'autres facteurs comme les appréciations et le livret scolaire 
+vont également compter pour ce bac assez spécial.
 
 # Comment l'utiliser ?
 
@@ -76,22 +80,17 @@ L'api est lancée et la console devrait afficher :\
 
 ### Lancer le script
 
-Il y a deux possibilités pour lancer le script, la première méthode est plus simple et ne nécessite plus rien, mais 
-n'est peut être pas mis à jour.
-
-#### Par l'executable
-
-Retourner dans le dossier *estimation_bac_pronote-master* et lancer l'executable
-
-#### En utilisant python
-
 Récupérer le chemin d'accès vers le dossier du script (C:\...\estimation_bac_pronote-master) et rentrer dans une 
 autre fenêtre de la console (cd + le chemin d'accès) :\
 `cd C:\...\estimation_bac_pronote-master`\
 Puis installez les modules python :\
 `pip install -r requirements.txt`\
-Et lancez le script en double cliquant sur main.py ou en rentrant dans la console\
+Et lancez le script en lançant le fichier ***main.py*** ou en rentrant dans la console\
  `main.py`
+ 
+ Après avoir attendu quelques secondes il devrait afficher :
+ `Appuyez sur une touche pour continuer... `
+ Ca veut dire qu'il a fini, les résultats se trouvent dans le dossier output. Le bilan se trouve dans le fichier *bilan.pdf*.
 
 ## Sous linux
 
@@ -120,39 +119,31 @@ Maintenant vous pouvez lancer le script\
 `$ python3 main.py`\
 La note est affichée à l'écran avec la mention
 
-##Les graphiques
+## Les graphiques
 
 Le script crée automatiquement un certain nombre de graphiques, ils sont tous rangés dans le dossier *output/graphs*.
-Voici des explications plus claires que leur titre et leur mini légende :\
+Voici des explications plus claires que leur titre et leur mini légende :
 
-### Les nuages de points
+1. Le premier graphique est un nuage de point comparant les notes des différentes matières. L’abscisse des points 
+colorés représentent la moyenne de chaque matière, leur taille correspond au coefficient donc au poids de la moyenne 
+dans la note finale. La couleur de ces points représente l'écart relatif (la différence) à la moyenne de la classe, 
+plus la couleur est dans le haut ou dans le vert, plus la note est bonne par rapport à la moyenne de la classe. \
+Les triangles bleus représentent les moyennes des trimestres, trimestre 1 ce sont les triangles orientés vers la droite 
+et trimestre 2 vers la gauche. Les barres verticales quant à elles représentent les moyennes de classe dans les 
+trimestres correspondants (|). Le carré gris représente la moyenne de classe des deux trimestres.
+2. Le deuxième graphique est très proche du dernier, c’est une représentation plus simple qui classe les notes par 
+rapport à la moyenne de classe au lieu de leur nom. La note de l'élève est tracé par un rond coloré ayant des 
+coordonnées relatives à elle-même en abscisse et à la moyenne de la classe en ordonnée. Comme le précédent la couleur 
+représente la différence par rapport à la moyenne de classe et la taille leur coefficient.
+3. Le troisième graphique est histogramme, il est encore plus simple qu’avant. Les points correspondent aux points du 
+bac, ou au produit entre la note d'une matière et son coefficient. \
+Les notes sont ordonnées par rapport a leur nom, mais d’autres informations sont présentes. D'abord il y a la moyenne 
+des points des élèves de la classe, puis la moyenne de tes points, la moyenne de tes points avec les notes arrondies au 
+supérieur et enfin le maximum de points possibles pour cette matière.
+4. Ce graphique est un graphique en boite représentant des informations sur chaque donnée comme la moyenne en vert au 
+milieu, ou les quartiles qui représentent ou se trouve la majorité des notes. 
+5. Le dernier graphique est également très simple à comprendre, c’est un radar qui met en évidences les écarts des notes. 
+Le radar est une représentation d'un graphique avec des lignes dans un repère polaire. Il représente les notes de 
+l'élève, ainsi que les notes arrondies de l'élèves et sont comparées à la moyenne de classe dans chaque matière.
 
-1. Ce premier nuage de points a comme ordonnée les matières et en abscisses les notes. Les points colorés représentent la moyenne
-de chaque matière. La taille des points correspond au coefficient donc au poids de la moyenne dans la note finale. La 
-couleur de ces points représente l'écart à la moyenne de la classe, plus la couleur est dans le haut de la colormap plus
-la note est bonne par rapport à la moyenne de la classe. Les triangles représentent les moyennes des trimestres 
-(T1 > et T2 <) et par la même occasion les barres verticales représentent les moyennes de classe dans les trimestres correspondants (|).
-Le carré gris représente la moyenne de classe des deux trimestres.
-
-2. Ce deuxième nuage de points est une représentation plus simple du dernier. La note de l'élève est tracé par un rond coloré ayant des
-coordonnées relatives à elle même en abscisse et à la moyenne de la classe en ordonnée. Comme le précédent la couleur
-représente la différence par rapport à la moyenne de classe.
-
-### Les histogrammes
-
-1. Le premier histogramme est une représentation simple des points. Les points correspondent au produit entre la note d'une
-matière et son coefficient. En ordonnée les matières et en abscisse les points. Plusieurs barres sont présentes, d'abord il y
-a la moyenne de classe, puis la moyenne de tes points, ensuite la moyenne de tes points avec les notes arrondies au supérieur
-et enfin le maximum de points possibles pour cette matière.
-
-### Les graphiques en boite
-
-1. Le graphique en boite représente des informations sur chaque données comme la moyenne en vert au milieu, ou les quartiles
-qui représentent ou se trouve la majorité des notes. Les extrémités des valeurs sont aussi données.
-
-### Le radar
-
-1. Le radar est une représentation d'un graphique avec des lignes dans un repère polaire. Il représente les notes de l'élève,
-ainsi que les notes arrondies de l'élèves et sont comparées à la moyenne de classe dans chaque matière.
-
-#### Des problèmes ? [Contactez moi](http://valentin.cassayre.me/contact)
+#### Des problèmes ? Des idées ? [Contactez moi](http://valentin.cassayre.me/contact)
