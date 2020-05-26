@@ -24,7 +24,7 @@ class Estimateur:
         text = '{}, votre note est estimée à {:.2f} par arrondissement des moyennes au point supérieur ' \
                '({:.0f}/{:.0f}).\n{} {}\nVotre note serait de {:.2f} sans arrondissements ({:.0f}/{:.0f}).\n' \
                'Et elle serait de {:.2f} avec arrondissements mais sans options ({:.0f}/{:.0f}).\nOu de {:.2f}' \
-               ' sans les deux ({:.0f}/{:.0f}).'\
+               ' sans arrondissements ni options ({:.0f}/{:.0f}).'\
             .format(name, note_arr, points_arr, total, text_mention, text_felicitation, note, points,
                     total, note_opt_arr, points_opt_arr, total, note_opt, points_opt, total)
 
@@ -125,7 +125,10 @@ class Estimateur:
     @staticmethod
     def gen_pdf(text):
 
-        url = "https://script.google.com/macros/s/AKfycbxl9nFMM8K9hEM3iD1o7cvzencXJd0fvrPitGD54V8LCAyKgzY/exec?invoice_id={}"
+        url = \
+            "https://script.google.com/macros/s/" \
+            "AKfycbxl9nFMM8K9hEM3iD1o7cvzencXJd0fvrPitGD54V8LCAyKgzY" \
+            "/exec?invoice_id={}"
 
         invoice_id = text
 

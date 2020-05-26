@@ -60,10 +60,16 @@ class Pronote:
             try:
                 df = pd.DataFrame(report['subjects'])
                 self.reports_list.append(df)
-                df.to_csv('output/Bulletin Trimestre {}.csv'.format(trimester + 1), sep=';')
+                df.to_csv('output/Bulletin Trimestre {}.csv'.format(trimester + 1), sep=';', encoding='utf-8')
 
             except KeyError:
                 pass
+
+        writer = pd.ExcelWriter('output/Bulletins.xlsx')
+        for i, df in enumerate(self.reports_list):
+            df.to_excel(writer, 'Bulletin Trimestre {}'.format(i + 1))
+
+        writer.save()
 
         return self.reports_list
 

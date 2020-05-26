@@ -7,6 +7,13 @@ class Dataframes:
     """
     class related to the analysis of the grades in dataframes
     """
+    @staticmethod
+    def opt(ser):
+        for i, value in enumerate(ser):
+            ser[i] = (value - 10)*2
+
+
+        return ser
 
     @staticmethod
     def create_full_table(df):
@@ -19,7 +26,10 @@ class Dataframes:
         df.loc[:, 'obligatoire'] = df.loc[:, 'coefficient'] >= 2
 
         # calc points
-        df.loc[:, 'points'] = df.loc[:, 'average'] * df.loc[:, 'coefficient']
+        df.loc[:, 'points'] = \
+            df.loc[:, 'average'] * df.loc[:, 'coefficient'] * df.loc[:, 'obligatoire'] + \
+            (df.loc[:, 'average'] - 10) * 2 * df.loc[:, 'coefficient'] * (df.loc[:, 'obligatoire'] == 0)
+
         df.loc[:, 'roundedPoints'] = df.loc[:, 'roundedAverage'] * df.loc[:, 'coefficient']
         df.loc[:, 'studentPoints'] = df.loc[:, 'studentClassAverage'] * df.loc[:, 'coefficient']
         df.loc[:, 'maxPoints'] = 20 * df.loc[:, 'coefficient']

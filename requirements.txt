@@ -3,3 +3,4 @@ matplotlib
 requests
 numpy
 PyPDF2
+openpyxl

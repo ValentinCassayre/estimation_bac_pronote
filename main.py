@@ -38,7 +38,7 @@ def connection():
 
     try:
 
-        pronote = Pronote(user_id=(username, password, link, ac), offline=True)
+        pronote = Pronote(user_id=(username, password, link, ac), offline=False)
 
         try:
             print("Connection réussie à Pronote {}".format(pronote.result['name']))
@@ -50,7 +50,10 @@ def connection():
 
             try:
                 return offline_connection()
-            except:
+            except FileNotFoundError:
+                os.system('pause')
+            except PermissionError:
+                print('Veuillez fermer le fichier output/pronote.json.')
                 os.system('pause')
 
     except urllib.error.URLError:
@@ -95,7 +98,7 @@ def main():
 
     Graph(df, bulletins)
 
-    print('Les graphiques ont été téléchargé dans output/graphs ou dans le fichier output/bilan')
+    print('Les graphiques ont été téléchargé dans output/graphs ou dans le fichier bilan output/bilan')
 
     os.system("pause")
 
