@@ -10,9 +10,7 @@ class Estimateur:
     """
 
     @staticmethod
-    def print_all(name, reports_list, df_other_marks):
-
-        df = Estimateur().create_table(reports_list, df_other_marks)
+    def print_all(name, df):
 
         note_arr, points_arr, total = Estimateur.calc_note(df, arr=True, opt=True, tot=True)
         note, points = Estimateur.calc_note(df, arr=False, opt=True, tot=False)
@@ -73,7 +71,11 @@ class Estimateur:
             points = (rows[grade[0]]*rows['realCoefficient']).sum()
 
         total_points = last_row['realCoefficient'] * 20
-        note = 20 * points / total_points
+
+        if total_points == 0:
+            note = 20
+        else:
+            note = 20 * points / total_points
 
         if tot:
             return note, points, total_points

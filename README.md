@@ -10,7 +10,7 @@ La note est estimé d'après les notes des bulletins des deux premiers trimestre
 (voir la rubrique *utilisation*) ainsi que leurs coefficients. Les deux bulletins sont d'abord fusionnées en gardant la moyenne
 et les coefficients de chaque matière. Chacune de ces moyennes, arrondies au supérieur (d'après le décret le plus récent) 
 correspondent à la note de l'épreuve. Le total de points de l'élève est calculé en multipliant
-chacune de ces notes par le coefficient de la matière.\
+chacune de ces notes par le coefficient de la matière.
 
 Maintenant vient également les notes des options qui comptent comme bonus. Chaque point au dessus de la moyenne est multiplié
 par son coefficient (d'après les coefficients officiels du bac) ou par le double de son coefficient 
