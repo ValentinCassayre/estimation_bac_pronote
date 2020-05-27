@@ -8,29 +8,29 @@ class Estimateur:
     """
     dont read this
     """
+    def __init__(self, name, reports_list, df_other_marks):
+        self.name = name
+        self.df = self.create_table(reports_list, df_other_marks)
 
-    @staticmethod
-    def print_all(name, df):
+    def print_all(self):
 
-        note_arr, points_arr, total = Estimateur.calc_note(df, arr=True, opt=True, tot=True)
-        note, points = Estimateur.calc_note(df, arr=False, opt=True, tot=False)
-        note_opt_arr, points_opt_arr = Estimateur.calc_note(df, arr=True, opt=False, tot=False)
-        note_opt, points_opt = Estimateur.calc_note(df, arr=False, opt=False, tot=False)
+        note_arr, points_arr, total = self.calc_note(arr=True, opt=True, tot=True)
+        note, points = self.calc_note(arr=False, opt=True, tot=False)
+        note_opt_arr, points_opt_arr = self.calc_note(arr=True, opt=False, tot=False)
+        note_opt, points_opt = self.calc_note(arr=False, opt=False, tot=False)
 
-        text_mention, text_felicitation = Estimateur.calc_mention(note_arr)
+        text_mention, text_felicitation = self.calc_mention(note_arr)
 
         text = '{}, votre note est estimée à {:.2f} par arrondissement des moyennes au point supérieur ' \
                '({:.0f}/{:.0f}).\n{} {}\nVotre note serait de {:.2f} sans arrondissements ({:.0f}/{:.0f}).\n' \
                'Et elle serait de {:.2f} avec arrondissements mais sans options ({:.0f}/{:.0f}).\nOu de {:.2f}' \
                ' sans arrondissements ni options ({:.0f}/{:.0f}).'\
-            .format(name, note_arr, points_arr, total, text_mention, text_felicitation, note, points,
+            .format(self.name, note_arr, points_arr, total, text_mention, text_felicitation, note, points,
                     total, note_opt_arr, points_opt_arr, total, note_opt, points_opt, total)
 
         print(text)
 
-        Estimateur.gen_pdf(text)
-
-        return df
+        self.gen_pdf(text)
 
     @staticmethod
     def create_table(reports_list, df_other_marks):
@@ -54,11 +54,10 @@ class Estimateur:
 
         return df
 
-    @staticmethod
-    def calc_note(df, arr=True, opt=True, tot=True):
+    def calc_note(self, arr=True, opt=True, tot=True):
 
-        rows = df.iloc[:-1, :]
-        last_row = df.iloc[-1, :]
+        rows = self.df.iloc[:-1, :]
+        last_row = self.df.iloc[-1, :]
 
         if arr:
             grade = 'roundedAverage', 'roundedPoints'

@@ -2,6 +2,7 @@
 
 from load_pronote import Pronote
 from note_mention import Estimateur
+from dataframes import Dataframes
 from graphs import Graph
 import urllib
 
@@ -84,6 +85,27 @@ def make_dir():
             pass
 
 
+def from_csv():
+
+    df = None
+    file = 'output/Relevé bac.csv'
+    while df is None:
+        try:
+            df = Dataframes.from_file(file)
+        except FileNotFoundError:
+            print("Le fichier {} n'a pas été trouvé dans le dossier output.".format(file))
+
+            file = input('Nom du fichier : ')
+            if not file.startswith('output'):
+                file = 'output/{}'.format(file)
+            if not file.endswith('.csv'):
+                file = '{}.csv'.format(file)
+
+    df = Estimateur.print_all('Elève', df)
+
+    Graph(df, (None, None))
+
+
 def main():
 
     make_dir()
@@ -94,9 +116,11 @@ def main():
 
     pronote.load_notes_bac()
 
-    df = Estimateur().print_all(pronote.result['name'], pronote.reports_list, pronote.df_other_marks)
+    disp = Estimateur(pronote.result['name'], pronote.reports_list, pronote.df_other_marks)
 
-    Graph(df, bulletins)
+    disp.print_all()
+
+    Graph(disp.df, bulletins)
 
     print('Les graphiques ont été téléchargé dans output/graphs ou dans le fichier bilan output/bilan')
 
