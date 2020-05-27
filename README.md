@@ -67,13 +67,18 @@ Une fois ces informations rentrées vous pouvez lancer le script et l'api.
 
 ### Lancer l'api
 
-[Télécharger node et suivre toutes les instructions](https://nodejs.org/dist/v12.16.3/node-v12.16.3-x64.msi)
-Lancer l'invite de commandes en tappant cmd dans la barre de recherche windows, et récupérer le chemin d'accès vers l'api
-téléchargé précedemment (chemin d'accès = C:\Users\...\pronote-api-master), puis tapper 'cd ' suivi du chemin d'accès :\
-`cd C:\Users\...\pronote-api-master`\
+Pour commencer, [installez *nodejs* si vous ne l'avez pas déjà](https://nodejs.org/dist/v12.17.0/node-v12.17.0-x64.msi) 
+([site officiel](https://nodejs.org/en/download/)).
+
+Lancer l'invite de commandes en tappant `cmd` dans la barre de recherche windows, et récupérer le chemin d'accès vers l'api
+téléchargé précedemment (chemin d'accès = C:\Users\...\pronote-api-master), puis tapper 'cd ' suivi du chemin d'accès :
+
+`cd C:\Users\...\pronote-api-master`
+
 Ensuite tappez\
 `npm i`\
-`node index.js`\
+`node index.js`
+
 L'api est lancée et la console devrait afficher :\
 `Starting...
 ---> Pronote API HTTP Server working on 127.0.0.1:21727`
@@ -82,9 +87,11 @@ L'api est lancée et la console devrait afficher :\
 
 Récupérer le chemin d'accès vers le dossier du script (C:\...\estimation_bac_pronote-master) et rentrer dans une 
 autre fenêtre de la console (cd + le chemin d'accès) :\
-`cd C:\...\estimation_bac_pronote-master`\
-Puis installez les modules python :\
-`pip install -r requirements.txt`\
+`cd C:\...\estimation_bac_pronote-master`
+
+Puis installez les modules python du script :\
+`pip install -r requirements.txt`
+
 Et lancez le script en lançant le fichier ***main.py*** ou en rentrant dans la console\
  `main.py`
  
@@ -97,12 +104,15 @@ Et lancez le script en lançant le fichier ***main.py*** ou en rentrant dans la 
 ### Lancer l'api
 
 Dans le terminal si ce n'est pas déjà fait installez npm et node\
-`$ sudo apt-get install nodejs npm`\
+`$ sudo apt-get install nodejs npm`
+
 Une fois que c'est fait vous pouvez vous rendre dans le dossier de l'api que vous avez téléchargé\
-`$ cd usr/.../pronote-api-master`\
+`$ cd usr/.../pronote-api-master`
+
 Puis lancez l'api\
 `$ npm i`\
-`$ node index.js`\
+`$ node index.js`
+
 Le terminal devrait afficher\
 `Starting...
 ---> Pronote API HTTP Server working on 127.0.0.1:21727`
@@ -110,14 +120,16 @@ Le terminal devrait afficher\
 ### Lancer le script
 
 Rendez vous dans le dossier du script téléchargé et remplit précédemment\
-`$ cd usr/.../estimation_bac_pronote-master`\
+`$ cd usr/.../estimation_bac_pronote-master`
+
 Pour installer les librairies installez pip si ce n'est pas fait\
-`$ sudo apt install python3-pip`\
+`$ sudo apt install python3-pip`
+
 Puis installez les\
-`$ pip3 install -r requirements.txt`\
+`$ pip3 install -r requirements.txt`
+
 Maintenant vous pouvez lancer le script\
-`$ python3 main.py`\
-La note est affichée à l'écran avec la mention
+`$ python3 main.py`
 
 ## Les graphiques
 
