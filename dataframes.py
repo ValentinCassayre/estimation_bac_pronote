@@ -26,15 +26,15 @@ class Dataframes:
         # calc points
         df.loc[:, 'points'] = \
             df.loc[:, 'average'] * df.loc[:, 'coefficient'] * df.loc[:, 'obligatoire'] + \
-            (df.loc[:, 'average'] - 10) * 2 * df.loc[:, 'coefficient'] * (df.loc[:, 'obligatoire'] == 0)
+            (df.loc[:, 'average'] - 10) * df.loc[:, 'coefficient'] * (df.loc[:, 'obligatoire'] == 0)
 
         df.loc[:, 'roundedPoints'] = \
             df.loc[:, 'roundedAverage'] * df.loc[:, 'coefficient'] * df.loc[:, 'obligatoire'] + \
-            (df.loc[:, 'roundedAverage'] - 10) * 2 * df.loc[:, 'coefficient'] * (df.loc[:, 'obligatoire'] == 0)
+            (df.loc[:, 'roundedAverage'] - 10) * df.loc[:, 'coefficient'] * (df.loc[:, 'obligatoire'] == 0)
 
         df.loc[:, 'studentPoints'] = \
             df.loc[:, 'studentClassAverage'] * df.loc[:, 'coefficient'] * df.loc[:, 'obligatoire'] + \
-            (df.loc[:, 'studentClassAverage'] - 10) * 2 * df.loc[:, 'coefficient'] * (df.loc[:, 'obligatoire'] == 0)
+            (df.loc[:, 'studentClassAverage'] - 10) * df.loc[:, 'coefficient'] * (df.loc[:, 'obligatoire'] == 0)
 
         df.loc[:, 'maxPoints'] = \
             20 * df.loc[:, 'coefficient'] * df.loc[:, 'obligatoire']
