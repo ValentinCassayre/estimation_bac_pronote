@@ -20,7 +20,7 @@ class Pronote:
 
         if offline:
             print('Mode hors ligne sur la sauvegarde de la dernière connection.')
-            with open('output/pronote.json', 'r', encoding='utf-8') as pronote:
+            with open('output/pronote.json', 'r', encoding='utf-8-sig') as pronote:
                 self.result = json.load(pronote)
 
         else:
@@ -47,7 +47,7 @@ class Pronote:
                 self.result['error']
 
             except KeyError:
-                with open('output/pronote.json', 'w', encoding='utf-8') as save:
+                with open('output/pronote.json', 'w', encoding='utf-8-sig') as save:
                     save.write(page)
 
     def reports(self):
@@ -78,7 +78,7 @@ class Pronote:
         load the additional notes from the file (Français/TPE/Sciences...)
         """
 
-        with open('infos/marks_data.txt', 'r', encoding='utf-8') as txt:
+        with open('infos/marks_data.txt', 'r', encoding='utf-8-sig') as txt:
             for line in txt:
                 line = line.replace('\n', '')
                 if line.startswith('#'):

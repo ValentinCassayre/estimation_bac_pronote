@@ -16,7 +16,7 @@ def get_id():
     id = []
     complete = True
 
-    with open("infos/connection_data.txt", 'r', encoding='utf-8') as file:
+    with open("infos/connection_data.txt", 'r', encoding='utf-8-sig') as file:
 
         for line in file:
             line = line.replace(' ', '').replace('\n', '')
