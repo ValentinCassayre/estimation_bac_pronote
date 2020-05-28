@@ -22,7 +22,7 @@ def get_id():
             line = line.replace(' ', '').replace('\n', '')
             if not line.startswith('#'):
                 data = line.split('=')
-                if data[1] == '':
+                if len(data) < 2 or data[1] == '':
                     if complete:
                         print("Veuillez remplir les champs manquants :")
                         complete = False
@@ -122,7 +122,7 @@ def main():
 
     Graph(disp.df, bulletins)
 
-    print('Les graphiques ont été téléchargé dans output/graphs ou dans le fichier bilan output/bilan')
+    print('\nLes graphiques ont été téléchargé dans output/graphs ou dans le fichier bilan output/bilan\n')
 
     os.system("pause")
 
